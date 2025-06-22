@@ -10,6 +10,7 @@ import Container from '@mui/material/Container';
 import Button from '@mui/material/Button';
 import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
+import { useAuthStore } from '../../stores/authStore';
 import { useNavigate } from 'react-router-dom';
 
 // Define your top-level pages
@@ -19,12 +20,14 @@ const pages = ['Master', 'Home', 'ImportRate', 'Report']; // Removed SetupCurren
 const reportMenuItems = ['RateReport'];
 const masterItems = ['Setup Currency'];
 
+
 function ResponsiveAppBar() {
+  const logoutAuth = useAuthStore((state) => state.logout)
   const navigate = useNavigate();
 
   const [anchorElNav, setAnchorElNav] = React.useState(null);
-  const [anchorElReportMenu, setAnchorElReportMenu] = React.useState(null); // State for Report submenu anchor
-  const [anchorElMasterMenu, setAnchorElMasterMenu] = React.useState(null); // NEW: State for Master submenu anchor
+  const [anchorElReportMenu, setAnchorElReportMenu] = React.useState(null);
+  const [anchorElMasterMenu, setAnchorElMasterMenu] = React.useState(null);
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -36,7 +39,6 @@ function ResponsiveAppBar() {
 
   const handleOpenReportMenu = (event) => {
     setAnchorElReportMenu(event.currentTarget);
-    // Close other menus if open (optional, but good UX)
     setAnchorElNav(null);
     setAnchorElMasterMenu(null);
   };
@@ -45,10 +47,9 @@ function ResponsiveAppBar() {
     setAnchorElReportMenu(null);
   };
 
-  // NEW: Handlers for Master menu
+
   const handleOpenMasterMenu = (event) => {
     setAnchorElMasterMenu(event.currentTarget);
-    // Close other menus if open (optional, but good UX)
     setAnchorElNav(null);
     setAnchorElReportMenu(null);
   };
@@ -56,12 +57,14 @@ function ResponsiveAppBar() {
   const handleCloseMasterMenu = () => {
     setAnchorElMasterMenu(null);
   };
-
+  const handleLogOut = () => {
+    logoutAuth();
+  }
   const handleRouting = (path) => {
     navigate('/' + path.toLowerCase().replace(/\s/g, ''));
-    handleCloseNavMenu(); // Close mobile nav menu
-    handleCloseReportMenu(); // Close report submenu
-    handleCloseMasterMenu(); // NEW: Close master submenu
+    handleCloseNavMenu(); 
+    handleCloseReportMenu(); 
+    handleCloseMasterMenu(); 
   };
 
   return (
@@ -126,7 +129,7 @@ function ResponsiveAppBar() {
                       </MenuItem>
                       <Menu
                         id="report-menu-mobile"
-                        sx={{ display: { xs: 'block', md: 'none' } }} 
+                        sx={{ display: { xs: 'block', md: 'none' } }}
                         anchorEl={anchorElReportMenu}
                         anchorOrigin={{
                           vertical: 'top',
@@ -156,7 +159,7 @@ function ResponsiveAppBar() {
                       <Menu
                         id="master-menu-mobile"
                         sx={{ display: { xs: 'block', md: 'none' } }}
-                        anchorEl={anchorElMasterMenu} 
+                        anchorEl={anchorElMasterMenu}
                         anchorOrigin={{
                           vertical: 'top',
                           horizontal: 'right',
@@ -166,8 +169,8 @@ function ResponsiveAppBar() {
                           vertical: 'top',
                           horizontal: 'left',
                         }}
-                        open={Boolean(anchorElMasterMenu)} 
-                        onClose={handleCloseMasterMenu} 
+                        open={Boolean(anchorElMasterMenu)}
+                        onClose={handleCloseMasterMenu}
                       >
                         {masterItems.map((item) => (
                           <MenuItem key={item} onClick={() => handleRouting(item)}>
@@ -222,7 +225,7 @@ function ResponsiveAppBar() {
                     </Button>
                     <Menu
                       id="report-menu-desktop"
-                      sx={{ display: { xs: 'none', md: 'flex' } }} 
+                      sx={{ display: { xs: 'none', md: 'flex' } }}
                       anchorEl={anchorElReportMenu}
                       anchorOrigin={{
                         vertical: 'bottom',
@@ -247,7 +250,7 @@ function ResponsiveAppBar() {
                   /* Desktop Master Submenu - NEW SECTION */
                   <>
                     <Button
-                      onClick={handleOpenMasterMenu} 
+                      onClick={handleOpenMasterMenu}
                       sx={{ my: 2, color: 'white', display: 'block' }}
                     >
                       {page}
@@ -255,7 +258,7 @@ function ResponsiveAppBar() {
                     <Menu
                       id="master-menu-desktop"
                       sx={{ display: { xs: 'none', md: 'flex' } }}
-                      anchorEl={anchorElMasterMenu} 
+                      anchorEl={anchorElMasterMenu}
                       anchorOrigin={{
                         vertical: 'bottom',
                         horizontal: 'left',
@@ -265,8 +268,8 @@ function ResponsiveAppBar() {
                         vertical: 'top',
                         horizontal: 'left',
                       }}
-                      open={Boolean(anchorElMasterMenu)} 
-                      onClose={handleCloseMasterMenu} 
+                      open={Boolean(anchorElMasterMenu)}
+                      onClose={handleCloseMasterMenu}
                     >
                       {masterItems.map((item) => (
                         <MenuItem key={item} onClick={() => handleRouting(item)}>
@@ -287,6 +290,7 @@ function ResponsiveAppBar() {
               </React.Fragment>
             ))}
           </Box>
+          <Button variant='contained' onClick={handleLogOut}>LogOut</Button>
         </Toolbar>
       </Container>
     </AppBar>
