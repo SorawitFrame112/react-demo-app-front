@@ -27,9 +27,9 @@ const App = () => {
             }
           />
           <Route
-            path="/currency"
+            path="/setupCurrency"
             element={
-              <PrivateRoute allowedRoles={['admin', 'finance']}>
+              <PrivateRoute>
                 <SetupCurrency />
               </PrivateRoute>
             }

@@ -10,21 +10,20 @@ const PrivateRoute = ({ allowedRoles, children }) => {
   }, [initializeAuth, isAuthenticated, user]);
 
 
-  // 1. ตรวจสอบยืนยันตัวตน
+
   if (!isAuthenticated) {
     return <Navigate to="/" state={{ from: location }} replace />;
   }
 
-  // 2. ตรวจสอบสิทธิ์
-  if (allowedRoles && user && user.roles) {
-    const hasRequiredRole = allowedRoles.some(role => user.roles.includes(role));
-    if (!hasRequiredRole) {
-      return <Navigate to="/unauthorized" state={{ from: location }} replace />;
-    }
-  }
 
-  // ถ้าผ่านการตรวจสอบทั้งหมด
-  return  <Outlet />;
+  // if (allowedRoles && user && user.roles) {
+  //   const hasRequiredRole = allowedRoles.some(role => user.roles.includes(role));
+  //   if (!hasRequiredRole) {
+  //     return <Navigate to="/unauthorized" state={{ from: location }} replace />;
+  //   }
+  // }
+
+  return  children;
 };
 
 export default PrivateRoute;
